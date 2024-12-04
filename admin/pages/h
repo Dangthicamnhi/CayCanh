@@ -1,0 +1,59 @@
+<div class="container">
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input value="<?php echo $result_pro['name'] ?>" type="text" class="form-control" name="name" id="name" aria-describedby="helpId" placeholder="" />
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input value="<?php echo $result_pro['price'] ?>" type="text" class="form-control" name="price" id="price" aria-describedby="helpId" placeholder="" />
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select
+                class="form-select form-select-lg"
+                name="category"
+                id="category">
+                <option>Select one</option>
+                <?php
+                $query = $db->executeQuery("SELECT * FROM category");
+                $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
+
+                ?>
+                <?php foreach ($result as $value) : ?>
+                    <option <?php echo $value['id'] == $result_pro['category'] ? 'selected' : '' ?> value="<?php echo $value['id'] ?>" style="text-transform: capitalize;"><?php echo $value['name'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input
+                type="file"
+                class="form-control"
+                name="image"
+                id="image"
+                placeholder=""
+                aria-describedby="fileHelpId" />
+        </div>
+
+        <div class="mb-3">
+            <label for="saleoff" class="form-label">Saleoff</label>
+            <input value="<?php echo $result_pro['saleoff'] ?>" type="text" class="form-control" name="saleoff" id="saleoff" aria-describedby="helpId" placeholder="" />
+        </div>
+        <div class="mb-3">
+            <label for="short_descripsion" class="form-label"></label>
+            <textarea class="form-control" name="short_descripsion" id="short_descripsion" rows="3"><?php echo $result_pro['short_descripsion'] ?></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="inStock" class="form-label">Stock</label>
+            <input value="<?php echo $result_pro['inStock'] ?>" type="number" min="0" class="form-control" name="inStock" id="inStock" aria-describedby="helpId" placeholder="" />
+        </div>
+        <button
+            type="submit" name="edit_product"
+            class="btn btn-primary">
+            Submit
+        </button>
+
+    </form>
+</div>

@@ -11,9 +11,9 @@ include 'header.php';
         text-align: center;
         margin: 0;
         padding: 0;
-        display: flex;
+        /* display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: center; */
         height: 100vh;
         box-sizing: border-box;
     }
@@ -30,7 +30,7 @@ include 'header.php';
         color: #555;
     }
 
-    a {
+    /* a {
         font-size: 1.1em;
         color: #fff;
         background-color: #4CAF50;
@@ -42,7 +42,7 @@ include 'header.php';
 
     a:hover {
         background-color: #45a049;
-    }
+    } */
 
     /* Responsive design */
     @media screen and (max-width: 600px) {
