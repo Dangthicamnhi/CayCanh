@@ -6,31 +6,29 @@ include 'header.php';
 <div class="container">
 
     <div class="table-responsive py-5">
-        <table
-            class="table table-primary">
-            <thead>
-                <tr>
-                    <th style="width: 10%;" scope="col">Tên</th>
-                    <th style="width: 10%;" scope="col"></th>
-                    <th style="width: 10%;" scope="col">Loại</th>
-                    <th style="width: 10%;" scope="col">Giá</th>
-                    <th style="width: 10%;" scope="col">Số lượng</th>
-                    <th style="width: 10%;" scope="col">
-                        <a href="Cart?clearCart" class="btn">Clear</a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
+        <?php if (!empty($_SESSION['cart'])) : ?>
+            <table
+                class="table table-primary">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;" scope="col">Tên</th>
+                        <th style="width: 10%;" scope="col"></th>
+                        <th style="width: 10%;" scope="col">Loại</th>
+                        <th style="width: 10%;" scope="col">Giá</th>
+                        <th style="width: 10%;" scope="col">Số lượng</th>
+                        <th style="width: 10%;" scope="col">
+                            <a href="?clearCart" class="btn">Clear</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                <?php
-
-                if (!empty($_SESSION['cart'])) :
-
+                    <?php
                     foreach ($_SESSION['cart'] as $productId => $quantity) :
                         $get_product = $products->getProductById($productId);
                         $get_cate = $categorys->getCategoryById($get_product['category'])['name'];
 
-                ?>
+                    ?>
                         <tr>
                             <td scope="col"> <?php echo $get_product['name'] ?> </td>
                             <td scope="col">
@@ -53,22 +51,23 @@ include 'header.php';
                                 </a>
                             </td>
                         </tr>
-                <?php
+                    <?php
                     endforeach;
-                else :
-                    echo "Giỏ hàng trống.";
-                endif; ?>
+                    ?>
 
-            </tbody>
-            <thead>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th><a href="checkout.php" class="btn">Thanh Toán</a></th>
-            </thead>
-        </table>
+                </tbody>
+                <thead>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th><a href="checkout.php" class="btn">Thanh Toán</a></th>
+                </thead>
+            </table>
+        <?php else :
+            echo "Giỏ hàng trống.";
+        endif; ?>
     </div>
 </div>
 <!-- /.row -->

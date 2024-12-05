@@ -1,14 +1,17 @@
 <?php
+@session_start();
 include "php/connectDB.php";
+include "admin/pages/account.php";
 include "php/model_category.php";
 include "php/model_product.php";
 include "php/model_oder.php";
 include "php/model_oderdetail.php";
+include 'php/model_account.php';
+include 'php/model_account_info.php';
 $categorys = new Category;
 $products = new Product;
 $db = new DataAccessHelper;
 $db->connect();
-@session_start();
 include('Cart.php');
 if (isset($_SESSION['account'])) {
     json_encode(["status" => "success", "message" => "User is logged in"]);
@@ -129,37 +132,33 @@ if (isset($_POST['submitCart'])) {
                         </a>
                         <ul class="dropdown-menu dropdown-user">
                             <?php
-                            if (!isset($_SESSION['customer']) && !isset($_SESSION['account'])) {
+                            if (!isset($_SESSION['account'])) {
                             ?>
-                                <li><a href="admin/pages/login.html"><i class="fa fa-sign-in fa-fw"></i> Đăng nhập</a>
+                                <li><a href="login.php"><i class="fa fa-sign-in fa-fw"></i> Đăng nhập</a>
                                 </li>
-                                <li><a href="#"><i class="fa fa-user fa-fw"></i> Tạo tài khoản</a>
+                                <li><a href="register.php"><i class="fa fa-user fa-fw"></i> Tạo tài khoản</a>
                                 </li>
 
                             <?php
                             }
-                            if (isset($_SESSION['customer'])) {
+                            if (isset($_SESSION['account'])) {
+                                $id_user = $_SESSION['account']
                             ?>
-                                <li><a href="#"><i class="fa fa-user fa-fw"></i> Tài khoản</a>
+                                <li><a href="profile.php"><i class="fa fa-user fa-fw"></i> Tài khoản</a>
                                 </li>
+                                <?php
+                                if (Account::isAdmin($id_user)) {
+                                ?>
+                                    <li><a href="admin/pages/index.php"><i class="fa fa-gear fa-fw"></i> Đến trang admin</a>
+                                    </li>
+                                <?php
+                                }
+                                ?>
                                 <li class="divider"></li>
                                 <li><a href="php/logout.php"><i class="fa fa-sign-out fa-fw"></i> Đăng xuất</a>
                                 </li>
                             <?php
-                            }
-                            if (isset($_SESSION['account'])) {
-                            ?>
-                                <li><a href="admin/pages/index.php"><i class="fa fa-gear fa-fw"></i> Đến trang admin</a>
-                                </li>
-                                <li><a href="#"><i class="fa fa-user fa-fw"></i>Tài khoản</a>
-                                </li>
-
-                                <li class="divider"></li>
-                                <li><a href="php/logout.php"><i class="fa fa-sign-out fa-fw"></i>Đăng xuất</a>
-                                </li>
-                            <?php
-                            }
-                            ?>
+                            } ?>
 
                         </ul>
                     </li>

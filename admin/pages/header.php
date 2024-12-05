@@ -1,7 +1,7 @@
 <?php
-
-include "account.php";
 @session_start();
+include "../../php/connectDB.php";
+include "account.php";
 if (!isset($_SESSION['account'])) {
     header('Location: ../../index.php');
 }
@@ -79,7 +79,7 @@ $db->connect();
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="login.php"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->

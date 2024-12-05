@@ -1,5 +1,9 @@
 <?php
 include 'header.php';
+
+$id = $_SESSION['account'];
+$user = Account::getAccount($id);
+$user_info = Account_info::getAccountInfo($id);
 ?>
 
 <style>
@@ -69,7 +73,6 @@ include 'header.php';
         justify-content: space-between;
     }
 </style>
-
 <header>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner" role="listbox">
@@ -89,45 +92,46 @@ include 'header.php';
 
     <!-- Page Content -->
     <div class="container">
+        <?php
+        if (!empty($_SESSION['cart'])) : ?>
+            <div class="table-responsive py-5">
+                <h2>Thông tin khách hàng</h2>
+                <form action="process_checkout.php" method="POST">
+                    <label for="name">Tên khách hàng:</label>
+                    <input type="text" id="name" name="name" value="<?php echo $user['fullname'] ?>" required>
+                    <br><br>
 
-        <div class="table-responsive py-5">
-            <h2>Thông tin khách hàng</h2>
-            <form action="process_checkout.php" method="POST">
-                <label for="name">Tên khách hàng:</label>
-                <input type="text" id="name" name="name" required>
-                <br><br>
+                    <label for="number">Số điện thoại:</label>
 
-                <label for="number">Số điện thoại:</label>
-                <input type="text" id="number" name="number" required>
-                <br><br>
+                    <input type="text" id="number" name="number" value="<?php echo $user_info ?  $user_info['phone'] : "" ?>" required>
+                    <br><br>
 
-                <label for="address">Địa chỉ:</label>
-                <textarea id="address" name="address" rows="4" required></textarea>
-                <br><br>
+                    <label for="address">Địa chỉ:</label>
+                    <textarea id="address" name="address" rows="4" required><?php echo $user_info ?  $user_info['address'] : "" ?></textarea>
+                    <br><br>
 
-                <h3>Thông tin giỏ hàng</h3>
-                <table class="table table-primary">
-                    <div class="" id="product-list"></div>
-                    <script>
-                        // Lấy danh sách sản phẩm
-                        var products = ProductManager.getAllProducts();
+                    <h3>Thông tin giỏ hàng</h3>
+                    <table class="table table-primary">
+                        <div class="" id="product-list"></div>
+                        <script>
+                            // Lấy danh sách sản phẩm
+                            var products = ProductManager.getAllProducts();
 
-                        // Xuất danh sách ra màn hình
-                        var productListDiv = document.getElementById("product-list");
-                        products.forEach(function(product) {
-                            var productItem = document.createElement("div");
-                            productItem.innerHTML = `ID: ${product.id}, Name: ${product.name}, Price: $${product.price}`;
-                            productListDiv.appendChild(productItem);
-                        });
-                    </script>
-                    <?php
-                    if (isset($_POST['submitCart'])) {
-                        $id_p = $_POST['id'];
-                        $new_quan = $_POST['new_quantity'];
-                        updateCart($id_p, $new_quan);
-                    }
-
-                    if (!empty($_SESSION['cart'])) : ?>
+                            // Xuất danh sách ra màn hình
+                            var productListDiv = document.getElementById("product-list");
+                            products.forEach(function(product) {
+                                var productItem = document.createElement("div");
+                                productItem.innerHTML = `ID: ${product.id}, Name: ${product.name}, Price: $${product.price}`;
+                                productListDiv.appendChild(productItem);
+                            });
+                        </script>
+                        <?php
+                        if (isset($_POST['submitCart'])) {
+                            $id_p = $_POST['id'];
+                            $new_quan = $_POST['new_quantity'];
+                            updateCart($id_p, $new_quan);
+                        }
+                        ?>
                         <thead>
                             <tr>
                                 <th>Tên SP</th>
@@ -180,17 +184,18 @@ include 'header.php';
                             </tr>
                             <tr>
                                 <th colspan="7">
-                                    <a href="thanhtoan.php" class=" btn btn-primary">Thanh toán</a>
+                                    <input type="submit" class="btn btn-primary" name="checkoutAccess" value="Thanh toán">
                                 </th>
                             </tr>
                         </thead>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="7">Giỏ hàng trống.</td>
-                        </tr>
-                    <?php endif; ?>
-                </table>
-        </div>
+
+                    </table>
+            </div>
+        <?php else : ?>
+            <tr>
+                <td colspan="7">Giỏ hàng trống.</td>
+            </tr>
+        <?php endif; ?>
 
     </div>
     <!-- /.container -->

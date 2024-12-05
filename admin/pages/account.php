@@ -1,6 +1,6 @@
 <?php
-include "../../php/connectDB.php";
-@session_start();
+// include "../../php/connectDB.php";
+// @session_start();
 $fullname_ac = "admin";
 $username_ac = "CamNhi";
 if (isset($_POST["btn_submit"])) {
@@ -23,16 +23,15 @@ if (isset($_POST["btn_submit"])) {
 			$id_ac = $row["id"];
 			$username_ac = $row["username"];
 			$fullname_ac = $row["fullname"];
+
+			$_SESSION['account'] = $id_ac;
 			if ($row["role"] == "admin") {
-				$_SESSION['account'] = $id_ac;
-				$_SESSION['fullname'] = $fullname_ac;
-				header('Location: index.php');
+				header('Location: admin/pages/index.php');
 			} else {
-				$_SESSION['customer'] = $row['id'];
-				header('Location: ../../index.php');
+				header('Location: index.php');
 			}
 		}
 	} else {
-		header('Location: login.html');
+		header('Location: login.php');
 	}
 }

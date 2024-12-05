@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <a href="index.html">Trang chủ</a>
+      <a href="index.php">Trang chủ</a>
     </li>
     <li class="breadcrumb-item active">Liên hệ</li>
   </ol>

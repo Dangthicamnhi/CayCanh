@@ -9,4 +9,4 @@ if (isset($_SESSION['customer'])) {
 if (isset($_SESSION['account'])) {
 	unset($_SESSION['account']);
 }
-header('Location: ../admin/pages/login');
+header('Location: ../login.php');
