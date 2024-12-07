@@ -33,6 +33,8 @@ while ($row = mysqli_fetch_assoc($query)) {
   $summary = $row["name"];
   $price = (int)$row["price"];
   $imagi = $row["imagiUrl"];
+  $link  = $danhmuccon ?  "category=" . $danhmuccon . "&" : "";
+  $link = $link . ($trang ? "trang=" . $trang . "&" : "");
 ?>
   <div class="col-md-4 col-sm-6 col-lg-3 portfolio-item">
 
@@ -48,7 +50,7 @@ while ($row = mysqli_fetch_assoc($query)) {
         <span style="width: 100%">
           <strong class="Giat" name="price"> <?php echo number_format($price, 0, ',', '.') ?></strong>
           <span class=" productCart">
-            <a href="?add_cart=<?php echo $id ?>">
+            <a href="?<?php echo $link ?>add_cart=<?php echo $id ?>">
               <i class="fa fa-shopping-cart shopping_bg add-to-cart my-cart-btn" name="" aria-hidden="true"></i>
             </a>
           </span>

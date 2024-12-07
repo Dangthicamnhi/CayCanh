@@ -100,10 +100,8 @@ $user_info = Account_info::getAccountInfo($id);
                     <label for="name">Tên khách hàng:</label>
                     <input type="text" id="name" name="name" value="<?php echo $user['fullname'] ?>" required>
                     <br><br>
-
                     <label for="number">Số điện thoại:</label>
-
-                    <input type="text" id="number" name="number" value="<?php echo $user_info ?  $user_info['phone'] : "" ?>" required>
+                    <input type="text" id="phone" name="phone" value="<?php echo $user_info ?  $user_info['phone'] : "" ?>" required>
                     <br><br>
 
                     <label for="address">Địa chỉ:</label>
@@ -148,14 +146,14 @@ $user_info = Account_info::getAccountInfo($id);
                             $tongTien = 0;
 
                             foreach ($_SESSION['cart'] as $productId => $quantity) :
-                                $get_product = $products->getProductById($productId);
+                                $get_product = Product::getProductById($productId);
 
                                 if (!$get_product) {
                                     echo "<tr><td colspan='7'>Sản phẩm ID {$productId} không tồn tại.</td></tr>";
                                     continue;
                                 }
 
-                                $get_cate = $categorys->getCategoryById($get_product['category'])['name'] ?? 'Unknown';
+                                $get_cate = Category::getCategoryById($get_product['category'])['name'] ?? 'Unknown';
                             ?>
 
                                 <tr>

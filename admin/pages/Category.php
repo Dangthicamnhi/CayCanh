@@ -26,6 +26,12 @@ if (isset($_SESSION["DelErr"])) {
 $db = new DataAccessHelper();
 $db->connect(); // Kiểm tra kết nối
 
+include "account.php";
+$id_user = $_SESSION['account'];
+$sql = "SELECT * FROM account WHERE id = '$id_user'";
+$result = $db->executeQuery($sql);
+$user = mysqli_fetch_assoc($result);
+
 if (!isset($_SESSION['account'])) {
     header('Location: ../../index.php');
     exit(); // Dùng exit sau khi chuyển hướng
@@ -204,20 +210,18 @@ if (isset($_GET['cat_edit_id'])) {
             <nav class="navbar navbar-default navbar-static-top bg-dark" role="navigation" style="margin-bottom: 0px">
                 <div class="navbar-header.">
 
-                    <a class="navbar-brand" href="../../index.php">Đến giao diện người dùng</a>
+                    <a class="navbar-brand" href="../../index.php">RainBow Garden</a>
 
                 </div>
                 <!-- /.navbar-header -->
 
                 <ul class="nav navbar-top-links navbar-right ">
                     <li class="dropdown">
-
                         <a class="dropdown-toggle fn-bran-light" data-toggle="dropdown" href="#">
-                            <?php
-                            if ($_SESSION['fullname'])
-                                echo $_SESSION['fullname'] ?>
+                            <?php echo $user['fullname'] ?>
                             <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                         </a>
+
                         <ul class="dropdown-menu dropdown-user">
                             <li><a href="login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                             </li>
@@ -262,6 +266,9 @@ if (isset($_GET['cat_edit_id'])) {
                             </li>
                             <li>
                                 <a href="viewcategory.php"><i class="fa fa-table fa-fw"></i> Danh sách Loại sản phẩm</a>
+                            </li>
+                            <li>
+                                <a href="viewuser.php"><i class="fa fa-table fa-fw"></i> Danh Người Dùng</a>
                             </li>
                             <li>
                                 <a href="Gopy.php"><i class="fa fa-comments fa-fw"></i> Góp ý từ khách hàng</a>

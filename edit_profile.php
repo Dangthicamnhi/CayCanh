@@ -7,6 +7,7 @@ $sql = "SELECT * FROM account WHERE id = '$id'";
 $result = $db->executeQuery($sql);
 $user = mysqli_fetch_assoc($result);
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Xử lý cập nhật thông tin
     $fullname = $_POST['fullname'];

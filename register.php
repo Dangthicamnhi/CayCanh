@@ -6,7 +6,7 @@ if (isset($_POST["btn_register"])) {
     $username = $_POST["email"];
     $password = $_POST["password"];
     $confirm_password = $_POST["confirm_password"];
-    $role = "user"; // Mặc định tài khoản đăng ký là người dùng
+    $role = "client"; // Mặc định tài khoản đăng ký là người dùng
 
     // Loại bỏ các ký tự không hợp lệ
     $fullname = strip_tags($fullname);

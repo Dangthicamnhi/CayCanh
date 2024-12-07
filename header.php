@@ -1,17 +1,17 @@
 <?php
 @session_start();
 include "php/connectDB.php";
-include "admin/pages/account.php";
 include "php/model_category.php";
 include "php/model_product.php";
 include "php/model_oder.php";
 include "php/model_oderdetail.php";
 include 'php/model_account.php';
 include 'php/model_account_info.php';
-$categorys = new Category;
-$products = new Product;
+include 'php/model_stt_order.php';
 $db = new DataAccessHelper;
 $db->connect();
+include "admin/pages/account.php";
+
 include('Cart.php');
 if (isset($_SESSION['account'])) {
     json_encode(["status" => "success", "message" => "User is logged in"]);
@@ -88,7 +88,6 @@ if (isset($_POST['submitCart'])) {
                     <?php
                     $query = $db->executeQuery("SELECT * FROM category");
                     $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
-
                     ?>
                     <?php foreach ($result as $value) : ?>
                         <li class="nav-item">

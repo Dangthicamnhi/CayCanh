@@ -23,6 +23,8 @@
 
 <!-- DataTables JavaScript -->
 <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../vendor/datatables/js/dataTables.semanticui.js"></script>
+<script src="../vendor/datatables/js/jquery.dataTables.js"></script>
 <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
 <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
 

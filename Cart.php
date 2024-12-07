@@ -16,7 +16,7 @@ if (isset($_GET['add_cart'])) {
 
 if (isset($_GET['remove_Cart'])) {
 	$product_id = $_GET['remove_Cart'];
-	if ($products->getProductById($product_id)) {
+	if (Product::getProductById($product_id)) {
 		removeFromCart($product_id);
 	}
 }

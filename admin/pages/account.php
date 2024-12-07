@@ -12,8 +12,6 @@ if (isset($_POST["btn_submit"])) {
 	$username = addslashes($username);
 
 	$sql = "select * from account where username = '$username'";
-	$db = new DataAccessHelper;
-	$db->connect();
 	$query = $db->executeQuery($sql);
 	$num_rows = mysqli_num_rows($query);
 	echo $num_rows;

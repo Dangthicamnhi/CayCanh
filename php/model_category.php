@@ -1,7 +1,7 @@
 <?php
 class Category extends DataAccessHelper
 {
-    function getAllCategory()
+    static function getAllCategory()
     {
         $sql = self::$connection->prepare("SELECT * FROM category");
         $sql->execute();
@@ -9,7 +9,7 @@ class Category extends DataAccessHelper
         $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         return $items; //return an array
     }
-    function getCategoryById($id)
+    static function getCategoryById($id)
     {
         $sql = self::$connection->prepare("SELECT * FROM category WHERE id = ?");
         $sql->bind_param("i", $id); // 'i' -> id là integer

@@ -25,8 +25,8 @@ include 'header.php';
 
                     <?php
                     foreach ($_SESSION['cart'] as $productId => $quantity) :
-                        $get_product = $products->getProductById($productId);
-                        $get_cate = $categorys->getCategoryById($get_product['category'])['name'];
+                        $get_product = Product::getProductById($productId);
+                        $get_cate = Category::getCategoryById($get_product['category'])['name'];
 
                     ?>
                         <tr>

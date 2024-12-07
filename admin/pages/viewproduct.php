@@ -105,57 +105,6 @@ if (isset($_SESSION["DelErr"])) {
                         </div>
                     </form>
                 </div>
-                <div id="collapseEdit" class="panel-collapse collapse">
-                    <h4 style="color: #4b9249; padding-left: 30px;">Sửa sản phẩm</h4>
-                    <form action="Changeproduct.php" method="POST" enctype="multipart/form-data">
-                        <div class="panel-body">
-                            <div class="form-group col-lg-4">
-                                <input type="hidden" name="id" id="editProductId">
-                                <input class="form-control" placeholder="Tên sản phẩm" name="name" id="editProductName" required>
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <input class="form-control" placeholder="Giá" name="price" id="editProductPrice" required>
-                            </div>
-                            <?php
-                            $query = $db->executeQuery("SELECT * FROM category");
-                            $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
-
-                            ?>
-                            <div class="form-group col-lg-4">
-                                <select class="form-control" name="category">
-                                    <option value="">Loại cây</option>
-                                    <?php foreach ($result as $value) : ?>
-                                        <option value="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></option>
-                                    <?php endforeach; ?>
-
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <input class="form-control" placeholder="Khuyến mãi" name="saleoff" id="editProductSaleoff" required>
-                                <span class="input-group-addon">%</span>
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <input class="form-control" placeholder="Link ảnh" name="image" id="editProductImage" accept="image/png, image/jpeg, image/jpg" type="file">
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <input class="form-control" placeholder="Miêu tả" name="short_descripsion" id="editProductDescription" required>
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <input class="form-control" placeholder="Số lượng" name="inStock" id="editProductStock" required>
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <select class="form-control" name="isAvailable" id="editProductAvailable">
-                                    <option value="1">Được bán</option>
-                                    <option value="0">Lưu trữ</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <input type="submit" class="btn btn-outline btn-success" style="width: 100%" name="edit_product" value="Xác nhận sửa">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
 
                 <div id="collapseTwo" class="panel-collapse collapse">
                     <h4 style="color: #4b9249; padding-left: 30px;">Xóa sản phẩm</h4>
