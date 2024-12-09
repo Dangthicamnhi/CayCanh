@@ -3,7 +3,7 @@ include 'header.php';
 
 $id = $_SESSION['account'];
 $user = Account::getAccount($id);
-$user_info = Account_info::getAccountInfo($id);
+$user_info = Account_info::getAccountInfoActive($id);
 ?>
 
 <style>

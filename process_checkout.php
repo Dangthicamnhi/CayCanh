@@ -37,8 +37,8 @@ if (isset($_SESSION['account'])) {
     }
     if (isset($_GET['cancel'])) {
         $id = $_GET['cancel'];
-        $oder = Orders::getOrder_ByID($id);
-        if ($oder['custom_id'] == $user_id) {
+        $oder = Orders::getOrder_ByID($id, $user_id);
+        if ($oder) {
             if (Orders::cancelOrder($id)) {
                 $_SESSION['success'] = "Đã hủy đơn hàng!";
             } else {

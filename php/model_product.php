@@ -8,7 +8,7 @@ class Product extends DataAccessHelper
         $items = array();
         $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         $sql->close(); // Đóng statement
-        return $items; //return an array
+        return $items; //retur n an array
     }
     // Lấy sản phẩm theo id
     static function getProductById($id)

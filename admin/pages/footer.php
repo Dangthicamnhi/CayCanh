@@ -27,7 +27,11 @@
 <script src="../vendor/datatables/js/jquery.dataTables.js"></script>
 <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
 <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+<script src="../vendor/morrisjs/morris.min.js"></script>
 
+<!-- Custom Theme JavaScript -->
+
+<script src="../dist/js/sb-admin-2.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
 <script type="text/javascript">
@@ -102,6 +106,13 @@
         });
     });
 </script>
+
+
+
+
+</body>
+
+</html>
 </body>
 
 </html>

@@ -37,11 +37,12 @@ class Orders extends DataAccessHelper
         return $items; // Trả về một mảng chứa các đơn hàng của khách hàng
     }
     // Lấy đơn hàng theo ID
-    static function getOrder_ByID($id)
+    static function getOrder_ByID($id, $custom_id)
     {
+
         // Chuẩn bị câu truy vấn với tham số id
-        $sql = self::$connection->prepare("SELECT * FROM `order` WHERE id = ?");
-        $sql->bind_param('s', $id);
+        $sql = self::$connection->prepare("SELECT * FROM `order` WHERE id = ? AND custom_id =?");
+        $sql->bind_param('ii', $id, $custom_id);
         $sql->execute();
         $result = $sql->get_result();
         $items = $result->fetch_assoc();

@@ -1,10 +1,20 @@
 <?php
 class Account_info extends DataAccessHelper
 {
-    static function getAccountInfo($id)
+    static function getAccountInfoActive($id)
     {
         $sql = self::$connection->prepare("SELECT * FROM account_info WHERE id_user = ? AND active = 1");
         $sql->bind_param("i", $id); // 'i' -> id là integer
+        $sql->execute(); // Thực thi câu truy vấn
+
+        $result = $sql->get_result();
+        $info = $result->fetch_assoc(); // Lấy kết quả duy nhất
+        return $info; // Trả về thông tin danh mục
+    }
+    static function getAccountInfoById($id_address, $id_account)
+    {
+        $sql = self::$connection->prepare("SELECT * FROM account_info WHERE id = ? AND id_user = ?");
+        $sql->bind_param("ii", $id_address, $id_account); // 'i' -> id là integer
         $sql->execute(); // Thực thi câu truy vấn
 
         $result = $sql->get_result();
@@ -26,7 +36,8 @@ class Account_info extends DataAccessHelper
     {
         $sql = self::$connection->prepare("INSERT INTO account_info(phone, address, id_user) VALUES (?,?,?)");
         $sql->bind_param('ssi', $phone, $address, $id_account);
-        return $sql->execute();
+        $sql->execute();
+        return self::$connection->insert_id;
     }
     static function setDefaultAddress($userId, $addressId)
     {
@@ -41,5 +52,18 @@ class Account_info extends DataAccessHelper
         $sql->bind_param("ii", $addressId, $userId);
         $sql->execute();
         return $sql->close();
+    }
+    static function updateAddress($id, $id_account, $phone, $address)
+    {
+        $sql = self::$connection->prepare("UPDATE account_info SET phone = ?, address =? WHERE id = ? AND id_user = ?");
+        $sql->bind_param("ssii", $phone, $address, $id, $id_account);
+
+        return  $sql->execute();
+    }
+    static function deleteAddress($id, $id_account)
+    {
+        $sql = self::$connection->prepare("DELETE FROM account_info WHERE id = ? AND id_user = ? AND active != 1");
+        $sql->bind_param("ii", $id, $id_account);
+        return  $sql->execute();
     }
 }

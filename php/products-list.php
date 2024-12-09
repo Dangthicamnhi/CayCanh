@@ -40,18 +40,19 @@ while ($row = mysqli_fetch_assoc($query)) {
 
     <div class="card h-348 cart_items">
       <div class="dropdown">
-        <a href="sanpham.html" class="product-image"><img class="card-img-top" src="<?php echo $imagi  ?>" alt=""></a>
+        <a href="ChiTietSanPham.php?id=<?php echo $id; ?>" class="product-image"><img class="card-img-top" src="<?php echo $imagi  ?>" alt=""></a>
         <div class="dropdown-content"><img src="<?php echo $imagi ?>" width="400" height="400"></div>
       </div>
+
       <div class="card-body">
         <h4 class="card-title Namet">
           <?php echo $name ?>
         </h4>
         <span style="width: 100%">
-          <strong class="Giat" name="price"> <?php echo number_format($price, 0, ',', '.') ?></strong>
+          <strong class="Giat" name="price"> <?php echo number_format($price, 0, ',', '.') ?> VNĐ</strong>
           <span class=" productCart">
-            <a href="?<?php echo $link ?>add_cart=<?php echo $id ?>">
-              <i class="fa fa-shopping-cart shopping_bg add-to-cart my-cart-btn" name="" aria-hidden="true"></i>
+            <a class="add-to-cart my-cart-btn" href="?<?php echo $link ?>add_cart=<?php echo $id ?>">
+              <i class="fa fa-shopping-cart shopping_bg " name="" aria-hidden="true"></i>
             </a>
           </span>
         </span>

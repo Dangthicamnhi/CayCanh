@@ -8,9 +8,9 @@ include 'header.php';
  đã giao hàng -->
 <?php if (isset($_GET['id'])) {
     $idOrder = $_GET['id'];
-    $order = Orders::getOrder_ByID($idOrder);
+    $order = Orders::getOrder_ByID($idOrder, $id_user);
     $id_user = $_SESSION['account'];
-    if ($order['custom_id'] != $id_user) {
+    if (!$order) {
         echo " <script>
             location.href = 'profile.php';
         </script>";
