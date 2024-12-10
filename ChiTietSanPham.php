@@ -56,58 +56,55 @@ if ($product) {
     </div>
   </div>
   <!-- Comments Form -->
-  <div class="card my-4">
-    <h5 class="card-header">Bình luận</h5>
-    <div class="card-body">
-      <form>
-        <div class="form-group">
-          <textarea class="form-control" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="background-color:#4b9249; border-color:#4b9249">Xác nhận</button>
-      </form>
-    </div>
-  </div>
 
-  <!-- Single Comment -->
-  <div class="media mb-4">
-    <img class="d-flex mr-3 rounded-circle" src="img/sakukai.jpg" alt="">
-    <div class="media-body">
-      <h5 class="mt-0">Ria Sakukia</h5>
-      Mình rất thích loại cây này, nó làm tăng cảm hứng khi mình làm việc rất nhiều... hm~~~
-    </div>
-  </div>
-
-  <!-- Comment with nested comments -->
-  <div class="media mb-4">
-    <img class="d-flex mr-3 rounded-circle" src="img/xuan.jpg" alt="">
-    <div class="media-body">
-      <h5 class="mt-0">葛盈瑄 </h5>
-      Mình mới mua, mình đặt nó trong nhà bếp thấy rất đẹp. Mà do buổi sáng nắng chiếu vào nhiều, không biết có bị gì không?
-
-      <div class="media mt-4">
-        <img class="d-flex mr-3 rounded-circle" src="img/farach.jpg" alt="">
-        <div class="media-body">
-          <h5 class="mt-0">celinefarach</h5>
-          Mình cũng có một cây như vậy ở nhà, đã ngoài nắng không sao đâu bạn!
-        </div>
+  <div class="containe">
+    <div class="card my-4">
+      <h5 class="card-header">Bình luận</h5>
+      <div class="card-body">
+        <?php if (isset($_SESSION['account'])): ?>
+          <!-- Form bình luận nếu đã đăng nhập -->
+          <form method="POST" action="add_comment.php">
+            <input type="hidden" name="product_id" value="<?php echo $id; ?>">
+            <div class="form-group">
+              <textarea class="form-control" name="comment_content" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="background-color:#4b9249; border-color:#4b9249">Xác nhận</button>
+          </form>
+        <?php else: ?>
+          <!-- Yêu cầu đăng nhập nếu chưa đăng nhập -->
+          <p>Bạn cần <a href="login.php">đăng nhập</a> để bình luận.</p>
+        <?php endif; ?>
       </div>
+    </div>
 
-      <div class="media mt-4">
-        <img class="d-flex mr-3 rounded-circle" src="img/baongoc.jpg" alt="">
-        <div class="media-body">
-          <h5 class="mt-0">Bảo Ngọc</h5>
-          Nếu để trong nhà bếp bạn nên để cây Kim Ngân á, cây đó đẹp mà chịu nắng tốt, quan trọng là phong thủy để trong nhà bếp lại lợi nữa.
-        </div>
-      </div>
+    <!-- Hiển thị danh sách bình luận -->
+    <div class="comments-list">
+      <?php
+      // Truy vấn danh sách bình luận cho sản phẩm hiện tại
+      $query_comments = $db->executeQuery("SELECT * FROM comments WHERE product_id = $id ORDER BY createdate DESC");
+
+      if (mysqli_num_rows($query_comments) > 0):
+        while ($comment = mysqli_fetch_assoc($query_comments)):
+      ?>
+          <div class="media mb-4">
+            <img class="d-flex mr-3 rounded-circle" src="img/default-avatar.jpg" alt="User Image" style="width: 50px; height: 50px;">
+            <div class="media-body">
+              <h5 class="mt-0"><?php echo htmlspecialchars($comment['user_name']); ?></h5>
+              <p><?php echo htmlspecialchars($comment['comment_content']); ?></p>
+              <small class="text-muted">Đăng vào: <?php echo $comment['createdate']; ?></small>
+            </div>
+          </div>
+        <?php endwhile;
+      else: ?>
+        <p>Chưa có bình luận nào.</p>
+      <?php endif; ?>
 
     </div>
-  </div>
 
-
-<?php
+  <?php
 } else { ?>
-  <h2>Không tìm thấy sản phẩm.</h2>
-  <a href="index.php">Trang chủ</a>
-<?php }
+    <h2>Không tìm thấy sản phẩm.</h2>
+    <a href="index.php">Trang chủ</a>
+  <?php }
 include "footer.php";
-?>
+  ?>

@@ -12,7 +12,67 @@ class Orders extends DataAccessHelper
         $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
         return $items; // Trả về một mảng chứa tất cả các đơn hàng
     }
+    static function getTotalPages($perPage = 10)
+    {
+        // Đếm tổng số đơn hàng
+        $sql = self::$connection->prepare("SELECT COUNT(*) AS total FROM `order`");
+        $sql->execute();
+        $result = $sql->get_result()->fetch_assoc();
+        $totalOrders = $result['total'];
 
+        // Tính tổng số trang
+        return ceil($totalOrders / $perPage);
+    }
+    static function getTotalPages_stt($perPage = 10, $stt = 1)
+    {
+        // Đếm tổng số đơn hàng
+        $sql = self::$connection->prepare("SELECT COUNT(*) AS total FROM `order` where sttOrder = ?");
+        $sql->bind_param("i", $stt);
+        $sql->execute();
+        $result = $sql->get_result()->fetch_assoc();
+        $totalOrders = $result['total'];
+
+        // Tính tổng số trang
+        return ceil($totalOrders / $perPage);
+    }
+    static function getAllOrder_pagination($page = 1, $perPage = 10)
+    {
+        // Tính toán OFFSET dựa trên số trang và số mục trên mỗi trang
+        $offset = ($page - 1) * $perPage;
+
+        // Chuẩn bị câu truy vấn với LIMIT và OFFSET
+        $sql = self::$connection->prepare("SELECT * FROM `order`  ORDER BY createdate DESC LIMIT ? OFFSET ? ");
+
+        // Ràng buộc giá trị cho LIMIT và OFFSET
+        $sql->bind_param("ii", $perPage, $offset);
+
+        // Thực thi truy vấn
+        $sql->execute();
+
+        // Lấy kết quả dưới dạng mảng kết hợp
+        $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+
+        return $items; // Trả về mảng chứa các đơn hàng của trang hiện tại
+    }
+    static function getAllOrder_pagination_stt($page = 1, $perPage = 10, $sttSelect = 1)
+    {
+        // Tính toán OFFSET dựa trên số trang và số mục trên mỗi trang
+        $offset = ($page - 1) * $perPage;
+
+        // Chuẩn bị câu truy vấn với LIMIT và OFFSET
+        $sql = self::$connection->prepare("SELECT * FROM `order` where sttOrder = ? ORDER BY createdate DESC LIMIT ? OFFSET ? ");
+
+        // Ràng buộc giá trị cho LIMIT và OFFSET
+        $sql->bind_param("iii", $sttSelect, $perPage, $offset);
+
+        // Thực thi truy vấn
+        $sql->execute();
+
+        // Lấy kết quả dưới dạng mảng kết hợp
+        $items = $sql->get_result()->fetch_all(MYSQLI_ASSOC);
+
+        return $items; // Trả về mảng chứa các đơn hàng của trang hiện tại
+    }
     // Lấy đơn hàng theo ID khách hàng
     static function getOrder_ByCustomerId($customerId)
     {
@@ -31,6 +91,18 @@ class Orders extends DataAccessHelper
         // Chuẩn bị câu truy vấn với tham số fullname
         $sql = self::$connection->prepare("SELECT * FROM `order` WHERE fullname = ?");
         $sql->bind_param('s', $fullname);
+        $sql->execute();
+        $result = $sql->get_result();
+        $items = $result->fetch_assoc();
+        return $items; // Trả về một mảng chứa các đơn hàng của khách hàng
+    }
+    // Lấy đơn hàng theo ID
+    static function getOrder_ByID_Admin($id)
+    {
+
+        // Chuẩn bị câu truy vấn với tham số id
+        $sql = self::$connection->prepare("SELECT * FROM `order` WHERE id = ?");
+        $sql->bind_param('i', $id);
         $sql->execute();
         $result = $sql->get_result();
         $items = $result->fetch_assoc();
@@ -66,5 +138,15 @@ class Orders extends DataAccessHelper
         $sql = self::$connection->prepare("UPDATE `order` SET sttOrder = 5 WHERE id = ?");
         $sql->bind_param('i', $orderId);
         return $sql->execute(); // Thực thi truy vấn và trả về kết quả
+    }
+    static function total_order($id)
+    {
+        $getOderDetail = OrderDetail::getOrder_ByOrderId($id);
+        $totalOrder = 0;
+        foreach ($getOderDetail as $value_detail) {
+            $totalDetail = $value_detail['price'] * $value_detail['quantity'];
+            $totalOrder += $totalDetail;
+        }
+        return $totalOrder;
     }
 }

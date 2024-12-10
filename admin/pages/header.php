@@ -1,7 +1,10 @@
 <?php
 @session_start();
 include "../../php/connectDB.php";
-
+include "../../php/model_oder.php";
+include "../../php/model_product.php";
+include "../../php/model_oderdetail.php";
+include "../../php/model_stt_order.php";
 if (!isset($_SESSION['account'])) {
     header('Location: ../../index.php');
 }
@@ -43,6 +46,7 @@ $user = mysqli_fetch_assoc($result);
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <link href="../css/customerad.css" rel="stylesheet" type="text/css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -118,6 +122,9 @@ $user = mysqli_fetch_assoc($result);
 
                             </ul>
                             <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="vieworder.php"><i class="fa fa-table fa-fw"></i>Đơn hàng</a>
                         </li>
                         <li>
                             <a href="viewproduct.php"><i class="fa fa-table fa-fw"></i> Danh sách sản phẩm</a>
