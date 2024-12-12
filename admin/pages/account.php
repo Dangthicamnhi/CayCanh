@@ -1,6 +1,6 @@
 <?php
 // include "../../php/connectDB.php";
-// @session_start();
+// @session_start(); 
 $fullname_ac = "admin";
 $username_ac = "CamNhi";
 if (isset($_POST["btn_submit"])) {
@@ -23,9 +23,11 @@ if (isset($_POST["btn_submit"])) {
 			$fullname_ac = $row["fullname"];
 
 			$_SESSION['account'] = $id_ac;
+
 			if ($row["role"] == "admin") {
 				header('Location: admin/pages/index.php');
 			} else {
+				var_dump($_SESSION['account']);
 				header('Location: index.php');
 			}
 		}

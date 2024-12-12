@@ -139,6 +139,13 @@ class Orders extends DataAccessHelper
         $sql->bind_param('i', $orderId);
         return $sql->execute(); // Thực thi truy vấn và trả về kết quả
     }
+    // hủy đơn hàng
+    static function changOrderStatus($orderId, $id_status)
+    {
+        $sql = self::$connection->prepare("UPDATE `order` SET sttOrder = ? WHERE id = ?");
+        $sql->bind_param('ii', $id_status, $orderId);
+        return $sql->execute(); // Thực thi truy vấn và trả về kết quả
+    }
     static function total_order($id)
     {
         $getOderDetail = OrderDetail::getOrder_ByOrderId($id);

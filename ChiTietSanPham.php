@@ -54,10 +54,9 @@ if ($product) {
         </div>
       </div>
     </div>
-  </div>
-  <!-- Comments Form -->
+    <!-- Comments Form -->
 
-  <div class="containe">
+
     <div class="card my-4">
       <h5 class="card-header">Bình luận</h5>
       <div class="card-body">
@@ -87,7 +86,7 @@ if ($product) {
         while ($comment = mysqli_fetch_assoc($query_comments)):
       ?>
           <div class="media mb-4">
-            <img class="d-flex mr-3 rounded-circle" src="img/default-avatar.jpg" alt="User Image" style="width: 50px; height: 50px;">
+            <!-- <img class="d-flex mr-3 rounded-circle" src="../img/default-avatar.jpg" alt="User Image" style="width: 50px; height: 50px;"> -->
             <div class="media-body">
               <h5 class="mt-0"><?php echo htmlspecialchars($comment['user_name']); ?></h5>
               <p><?php echo htmlspecialchars($comment['comment_content']); ?></p>
@@ -100,11 +99,13 @@ if ($product) {
       <?php endif; ?>
 
     </div>
+  </div>
 
-  <?php
+
+<?php
 } else { ?>
-    <h2>Không tìm thấy sản phẩm.</h2>
-    <a href="index.php">Trang chủ</a>
-  <?php }
+  <h2>Không tìm thấy sản phẩm.</h2>
+  <a href="index.php">Trang chủ</a>
+<?php }
 include "footer.php";
-  ?>
+?>

@@ -1,8 +1,38 @@
 <?php include 'header.php';
+
+if (isset($_SESSION["error"])) {
+    echo "<script>alert('{$_SESSION['error']}');</script>";
+    unset($_SESSION['error']);
+}
+if (isset($_SESSION["success"])) {
+    echo "<script>alert('{$_SESSION['success']}');</script>";
+    unset($_SESSION['success']);
+}
+if (isset($_SESSION["DelSS"])) {
+    echo "<script>alert('{$_SESSION['DelSS']}');</script>";
+    unset($_SESSION['DelSS']);
+}
+if (isset($_SESSION["DelErr"])) {
+    echo "<script>alert('{$_SESSION['DelErr']}');</script>";
+    unset($_SESSION['DelErr']);
+}
 ?>
 <div id="page-wrapper">
     <?php if (isset($_GET['id'])) {
+
         $id_order = $_GET['id'];
+        if (isset($_POST['change_stt'])) {
+            $id_status = $_POST['sttFilter'];
+            if (Orders::changOrderStatus($id_order, $id_status)) {
+                $_SESSION['success'] = "Thay đổi tình trạng thành công.";
+            } else {
+                $_SESSION['error'] = "Lỗi! Không thay đổi được tình trạng đơn hàng.";
+            }
+            echo " <script>
+            location.href = 'vieworder_detail.php?id=$id_order';
+            </script>";
+            exit;
+        }
         $order = Orders::getOrder_ByID_Admin($id_order);
         $order_detail = OrderDetail::getOrder_ByOrderId($id_order);
         if ($order) { ?>
@@ -14,10 +44,10 @@
                         <p class="card-text">Người nhận: <?php echo $order['fullname'] ?></p>
                         <p class="card-text">SDT: <?php echo $order['phone'] ?></p>
                         <p class="card-text">Địa chỉ: <?php echo $order['address'] ?></p>
-                        <form action="" method="post">
+                        <form action="" method="POST">
                             <div class="mb-3">
                                 <label for="sttFilter" class="form-label">Tình trạng:</label>
-                                <select name="stt" id="sttFilter">
+                                <select name="sttFilter" id="sttFilter">
                                     <?php $sttOrder = STTOrder::getAllSTTOrder();
                                     $sttSelect = $order['sttOrder'];
                                     if (isset($_GET['stt'])) {
@@ -31,8 +61,7 @@
                                     <?php } ?>
                                 </select>
                             </div>
-                            <button type="submit" name="change_stt" class="btn btn-primary"> Lưu </button>
-
+                            <input type="submit" name="change_stt" class="btn btn-primary" value="Lưu">
                         </form>
                     </div>
                 </div>

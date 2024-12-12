@@ -10,28 +10,56 @@ $user_info = Account_info::getAccountInfoActive($id_user);
 
 <div class="container" style="padding: 20px;">
     <h2 class="mt-4">Thông Tin Tài Khoản</h2>
-    <table class="table table-bordered">
-        <tr>
-            <th>Họ và tên:</th>
-            <td><?php echo htmlspecialchars($user['fullname']); ?></td>
-        </tr>
-        <tr>
-            <th>Email:</th>
-            <td><?php echo htmlspecialchars($user['username']); ?></td>
-        </tr>
-        <tr>
-            <th>Số Điện Thoại:</th>
-            <td><?php echo $user_info['phone'] ?></td>
-        </tr>
-        <tr>
-            <th>Địa Chỉ:</th>
-            <td><?php echo $user_info['address'] ?></td>
-        </tr>
-        <tr>
-            <th>Vai trò:</th>
-            <td><?php echo htmlspecialchars($user['role']); ?></td>
-        </tr>
-    </table>
+    <?php if ($user && $user_info): ?>
+        <table class="table table-bordered">
+            <tr>
+                <th>Họ và tên:</th>
+                <td><?php echo htmlspecialchars($user['fullname']); ?></td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td><?php echo htmlspecialchars($user['username']); ?></td>
+            </tr>
+            <tr>
+                <th>Số Điện Thoại:</th>
+                <td><?php echo $user_info['phone'] ?></td>
+            </tr>
+            <tr>
+                <th>Địa Chỉ:</th>
+                <td><?php echo $user_info['address'] ?></td>
+            </tr>
+            <tr>
+                <th>Vai trò:</th>
+                <td><?php echo htmlspecialchars($user['role']); ?></td>
+            </tr>
+        </table>
+    <?php else: ?>
+
+        <table class="table table-bordered">
+            <tr>
+                <th>Họ và tên:</th>
+                <td><?php echo htmlspecialchars($user['fullname']); ?></td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td><?php echo htmlspecialchars($user['username']); ?></td>
+            </tr>
+            <tr>
+                <th>Số Điện Thoại:</th>
+                <td><?php echo isset($user_info['phone']) ? ($user_info['phone']) : 'Không có dữ liệu'; ?></td>
+            </tr>
+            <tr>
+                <th>Địa Chỉ:</th>
+                <td><?php echo isset($user_info['address']) ? ($user_info['address']) : 'Không có dữ liệu'; ?></td>
+            </tr>
+            <tr>
+                <th>Vai trò:</th>
+                <td><?php echo htmlspecialchars($user['role']); ?></td>
+            </tr>
+        </table>
+        <p>Vui lòng thêm Địa Chi Và Số Điện Thoại.</p>
+    <?php endif; ?>
+
     <a href="edit_profile.php" class="btn btn-primary">Chỉnh sửa thông tin</a>
 
     <a href="edit_address.php" class="btn btn-primary">Chỉnh sửa địa chỉ</a>
