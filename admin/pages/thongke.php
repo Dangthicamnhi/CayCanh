@@ -191,7 +191,9 @@ include "footer.php";
 
         data: [
             <?php
-            $sqlChar = "SELECT sum(p2.tprice) tmonth,YEAR( p1.createdate) MonthC FROM cart p1 JOIN (SELECT d.id_cart, sum( d.quantity * p.price) tprice FROM cart_detail d JOIN product p ON d.id_product = p.id WHERE p.category={$category} GROUP BY d.id_cart) p2 ON p1.id =p2.id_cart  GROUP BY YEAR(p1.createdate)";
+            $sqlChar = "SELECT sum(p2.tprice) tmonth,YEAR( p1.createdate) MonthC FROM cart p1
+             JOIN (SELECT d.id_cart, sum( d.quantity * p.price) tprice FROM cart_detail d JOIN product p ON d.id_product = p.id
+             WHERE p.category={$category} GROUP BY d.id_cart) p2 ON p1.id =p2.id_cart  GROUP BY YEAR(p1.createdate)";
             $CharCart = $db->executeQuery($sqlChar);
 
             while ($row = mysqli_fetch_assoc($CharCart)) {

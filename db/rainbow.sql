@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 12, 2024 at 05:33 AM
+-- Generation Time: Dec 12, 2024 at 06:01 AM
 -- Server version: 8.0.31
 -- PHP Version: 8.0.26
 
@@ -31,7 +31,7 @@ DROP PROCEDURE IF EXISTS `AddToCart`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AddToCart` (IN `ctID` INT(11), IN `productID` INT(11), IN `quantity` INT(11))   BEGIN
 	DECLARE idcart int(11) DEFAULT 0;
     
-	SELECT ID into idcart FROM `order` WHERE sttOrder='2' AND custom_id=ctID;
+	SELECT ID into idcart FROM `order` WHERE sttOrder='1' AND custom_id=ctID;
     
     if idcart=0 THEN
     	INSERT INTO `order`( `createdate`, `custom_id`, `fullname`, `sttOrder`) VALUES (now(),customID,fullname,1);
@@ -460,7 +460,7 @@ END$$
 DROP FUNCTION IF EXISTS `totalAmounts`$$
 CREATE DEFINER=`root`@`localhost` FUNCTION `totalAmounts` (`beginDate` DATETIME, `endDate` DATETIME, `categoryPD` INT) RETURNS INT  BEGIN  
 DECLARE sumOder int DEFAULT 0;
-    SELECT sum( ol.quantity * activePrice(ol.id_product)) into sumOder FROM order_line ol WHERE id_order IN( SELECT o.id FROM `order` o WHERE o.sttOrder=5 AND o.createdate BETWEEN beginDate AND endDate) AND ol.id_product IN
+    SELECT sum( ol.quantity * activePrice(ol.id_product)) into sumOder FROM order_line ol WHERE id_order IN( SELECT o.id FROM `order` o WHERE o.sttOrder=4 AND o.createdate BETWEEN beginDate AND endDate) AND ol.id_product IN
     (SELECT id from product WHERE category=categoryPD);
    return sumOder;
 END$$
@@ -483,7 +483,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `createdate` datetime DEFAULT NULL,
   `lastmodified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Dumping data for table `account`
@@ -526,7 +526,8 @@ INSERT INTO `account` (`id`, `role`, `username`, `passwords`, `fullname`, `creat
 (34, 'client', 'client32@gmail.com', 'client32', 'Diệp Bảo Quỳnh', '2024-06-02 00:00:00', '2024-01-12 00:00:00'),
 (35, 'client', 'client33@gmail.com', 'client33', 'Dương Lê Quỳnh', '2024-05-05 00:00:00', '2024-01-07 00:00:00'),
 (36, 'client', 'client34@gmail.com', 'client34', 'Lê Minh Bảo', '2024-10-11 00:00:00', '2024-01-16 00:00:00'),
-(37, 'client', 'client35@gmail.com', 'client35', 'Nguyễn Thị Minh', '2024-11-12 00:00:00', '2024-01-27 00:00:00');
+(37, 'client', 'client35@gmail.com', 'client35', 'Nguyễn Thị Minh', '2024-11-12 00:00:00', '2024-01-27 00:00:00'),
+(38, 'client', 'thw@gmail.com', '$2y$10$80NxrYxWUQGS5WRZKTjHt.KTV5oG.MoFjWrlquD5zSP4aEzHmPKLe', 'thwthw', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -565,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `category` (
   `name` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Dumping data for table `category`
@@ -574,7 +575,8 @@ CREATE TABLE IF NOT EXISTS `category` (
 INSERT INTO `category` (`id`, `name`, `image`) VALUES
 (1, 'cây mini', 'img/deban.jpg'),
 (2, 'cây không khí', 'img/khongkhi.jpg'),
-(3, 'cây handmade', 'img/handmade.jpg');
+(3, 'cây handmade', 'img/handmade.jpg'),
+(4, 'haha', 'img/category_675a784760f920.29850475.jpg');
 
 -- --------------------------------------------------------
 
@@ -650,53 +652,21 @@ CREATE TABLE IF NOT EXISTS `order` (
   PRIMARY KEY (`id`),
   KEY `custom_id` (`custom_id`),
   KEY `sttOrder` (`sttOrder`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Dumping data for table `order`
 --
 
 INSERT INTO `order` (`id`, `createdate`, `custom_id`, `fullname`, `phone`, `sttOrder`, `address`) VALUES
-(1, '2024-01-16 00:00:00', 33, 'cart_cus_33', '', 5, ''),
-(2, '2024-09-04 00:00:00', 37, 'cart_cus_37', '', 5, ''),
-(3, '2024-09-15 00:00:00', 3, 'cart_cus_3', '', 5, ''),
-(4, '2024-03-04 00:00:00', 24, 'cart_cus_24', '', 5, ''),
-(5, '2024-08-25 00:00:00', 11, 'cart_cus_11', '', 5, ''),
-(6, '2024-03-25 00:00:00', 24, 'cart_cus_24', '', 5, ''),
-(7, '2024-05-28 00:00:00', 23, 'cart_cus_23', '', 5, ''),
-(8, '2024-03-02 00:00:00', 23, 'cart_cus_23', '', 5, ''),
-(9, '2024-07-11 00:00:00', 4, 'cart_cus_4', '', 5, ''),
-(10, '2024-03-04 00:00:00', 23, 'cart_cus_23', '', NULL, ''),
-(11, '2024-01-31 00:00:00', 5, 'cart_cus_5', '', NULL, ''),
-(12, '2024-03-03 00:00:00', 10, 'cart_cus_10', '', NULL, ''),
-(13, '2024-01-09 00:00:00', 21, 'cart_cus_21', '', NULL, ''),
-(14, '2024-07-29 00:00:00', 9, 'cart_cus_9', '', NULL, ''),
-(15, '2024-09-16 00:00:00', 8, 'cart_cus_8', '', 1, ''),
-(16, '2024-06-24 00:00:00', 26, 'cart_cus_26', '', NULL, ''),
-(17, '2024-06-18 00:00:00', 32, 'cart_cus_32', '', NULL, ''),
-(18, '2024-06-13 00:00:00', 19, 'cart_cus_19', '', 5, ''),
-(19, '2024-07-15 00:00:00', 34, 'cart_cus_34', '', 5, ''),
-(20, '2024-08-22 00:00:00', 30, 'cart_cus_30', '', 5, ''),
-(21, '2024-01-22 00:00:00', 16, 'cart_cus_16', '', 5, ''),
-(22, '2024-05-23 00:00:00', 34, 'cart_cus_34', '', 5, ''),
-(23, '2024-02-16 00:00:00', 25, 'cart_cus_25', '', NULL, ''),
-(24, '2024-11-11 00:00:00', 31, 'cart_cus_31', '', NULL, ''),
-(25, '2024-10-31 00:00:00', 22, 'cart_cus_22', '', NULL, ''),
-(26, '2024-01-29 00:00:00', 19, 'cart_cus_19', '', NULL, ''),
-(28, '2024-07-09 00:00:00', 34, 'cart_cus_34', '', NULL, ''),
-(30, '2024-08-14 00:00:00', 18, 'cart_cus_18', '', NULL, ''),
-(31, '2024-03-24 00:00:00', 4, 'cart_cus_4', '', NULL, ''),
-(32, '2024-08-29 00:00:00', 10, 'cart_cus_10', '', NULL, ''),
-(33, '2024-01-19 00:00:00', 19, 'cart_cus_19', '', NULL, ''),
-(35, '2024-05-26 17:05:04', 1, NULL, '', 5, ''),
-(36, '2024-06-02 22:51:20', 1, 'a', '', 5, ''),
-(37, '2024-12-12 05:07:46', 1, 'Cẩm Nhi', '0565284762', NULL, 'thu duc'),
-(38, '2024-12-12 05:09:05', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc'),
+(37, '2024-12-01 05:07:46', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc'),
+(38, '2024-12-03 05:09:05', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc'),
 (39, '2024-12-12 05:16:28', 1, 'Cẩm Nhi', '0565284762', 5, 'thu duc'),
-(40, '2024-12-12 05:21:18', 1, 'Cẩm Nhi', '0565284762', 1, 'thu duc'),
+(40, '2024-12-12 05:21:18', 1, 'Cẩm Nhi', '0565284762', 3, 'thu duc'),
 (41, '2024-12-12 05:25:38', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc'),
-(42, '2024-12-12 05:28:44', 1, 'Cẩm Nhi', '0565284762', 1, 'thu duc'),
-(43, '2024-12-12 05:31:16', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc');
+(42, '2024-02-29 05:28:44', 1, 'Cẩm Nhi', '0565284762', 1, 'thu duc'),
+(43, '2024-09-11 05:31:16', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc'),
+(44, '2024-12-05 05:45:45', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc');
 
 --
 -- Triggers `order`
@@ -763,38 +733,6 @@ CREATE TABLE IF NOT EXISTS `order_line` (
 --
 
 INSERT INTO `order_line` (`id_order`, `id_product`, `quantity`, `price`) VALUES
-(1, 53, 26, 0),
-(1, 60, 3, 0),
-(2, 58, 12, 0),
-(3, 47, 22, 0),
-(3, 53, 0, 0),
-(3, 55, 4, 0),
-(3, 69, 26, 0),
-(8, 68, 11, 0),
-(9, 57, 11, 0),
-(9, 66, 11, 0),
-(11, 69, 25, 0),
-(12, 50, 29, 0),
-(12, 52, 8, 0),
-(16, 49, 26, 0),
-(16, 51, 11, 0),
-(17, 53, 11, 0),
-(18, 50, 16, 0),
-(19, 49, 16, 0),
-(19, 50, 13, 0),
-(22, 56, 30, 0),
-(24, 67, 22, 0),
-(26, 52, 7, 0),
-(26, 55, 15, 0),
-(28, 54, 21, 0),
-(28, 61, 25, 0),
-(30, 50, 19, 0),
-(31, 48, 1, 0),
-(31, 55, 9, 0),
-(35, 50, 1, 0),
-(36, 50, 3, 0),
-(36, 51, 3, 0),
-(36, 52, 3, 0),
 (37, 62, 2, 239000),
 (37, 63, 1, 1216000),
 (38, 56, 1, 208098),
@@ -812,7 +750,8 @@ INSERT INTO `order_line` (`id_order`, `id_product`, `quantity`, `price`) VALUES
 (43, 50, 1, 50009),
 (43, 51, 1, 3816500),
 (43, 62, 1, 239000),
-(43, 63, 1, 1216000);
+(43, 63, 1, 1216000),
+(44, 74, 1, 50000);
 
 -- --------------------------------------------------------
 
@@ -829,7 +768,7 @@ CREATE TABLE IF NOT EXISTS `pricelist` (
   `enddate` date DEFAULT NULL,
   PRIMARY KEY (`priceID`),
   KEY `productID` (`productID`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Dumping data for table `pricelist`
@@ -898,7 +837,8 @@ INSERT INTO `pricelist` (`priceID`, `productID`, `price`, `startdate`, `enddate`
 (62, 58, 6000000, '2024-11-19', '2025-11-19'),
 (63, 59, 530000, '2024-11-19', '2025-11-19'),
 (64, 49, 1000000, '2024-11-19', '2025-11-19'),
-(65, 47, 100000000, '2024-11-19', '2025-11-19');
+(65, 47, 100000000, '2024-11-19', '2025-11-19'),
+(66, 74, 50000, '2024-12-12', '2025-01-01');
 
 -- --------------------------------------------------------
 
@@ -918,7 +858,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `isAvailable` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `category` (`category`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Dumping data for table `product`
@@ -948,7 +888,8 @@ INSERT INTO `product` (`id`, `name`, `saleoff`, `category`, `imagiUrl`, `short_d
 (67, 'Cây Môn Xanh Nhật Bản', 10, 1, 'img/cmn6.jpg', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab fugiat, expedita ut, suscipit officia tenetur enim error nulla perferendis dicta quaerat saepe, quo placeat odit quos tempore consectetur corrupti modi.', 10, 1),
 (68, 'Cây Môn Nhí Lá Tròn', 10, 1, 'img/cmn7.jpg', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab fugiat, expedita ut, suscipit officia tenetur enim error nulla perferendis dicta quaerat saepe, quo placeat odit quos tempore consectetur corrupti modi.', 10, 1),
 (69, 'Cây Ngũ Gia Bì', 10, 1, 'img/cmn8.jpg', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab fugiat, expedita ut, suscipit officia tenetur enim error nulla perferendis dicta quaerat saepe, quo placeat odit quos tempore consectetur corrupti modi.', 10, 1),
-(72, 'Cây dương xỉ', 10, 1, 'img/product_673a2a830ed644.54278460.jpg', 'Cây thực vật', 300, 1);
+(72, 'Cây dương xỉ', 10, 1, 'img/product_673a2a830ed644.54278460.jpg', 'Cây thực vật', 300, 1),
+(74, 'haha1', 4, 4, 'img/product_675a786cd4a601.93740109.jpg', 'cay oki', 25, 1);
 
 -- --------------------------------------------------------
 
