@@ -46,8 +46,9 @@ include  "header.php";
                 $orders = Orders::getAllOrder_pagination_stt($pager, $perPage, $sttSelect);
                 $totalPage = Orders::getTotalPages_stt($perPage, $sttSelect);
             }
-            foreach ($orders as $order) { ?>
-                <tr class="">
+            // foreach ($orders as $order) { 
+            ?>
+            <!-- <tr class="">
                     <td scope="row"><?php echo $order['fullname'] ?></td>
                     <td><?php echo $order['address'] ?></td>
                     <td><?php echo $order['createdate'] ?></td>
@@ -56,8 +57,35 @@ include  "header.php";
                     <td>
                         <a href="vieworder_detail.php?id=<?php echo $order['id'] ?>" type="button" class="btn btn-primary">View </a>
                     </td>
+                </tr> -->
+            <?php if (!empty($orders)) {
+                foreach ($orders as $order) {
+                    // Lấy thông tin trạng thái
+                    $stt = STTOrder::getSTTOrderById($order['sttOrder']);
+            ?>
+                    <tr>
+                        <td scope="row"><?php echo isset($order['fullname']) ? $order['fullname'] : "Không có tên"; ?></td>
+                        <td><?php echo isset($order['address']) ? $order['address'] : "Không có địa chỉ"; ?></td>
+                        <td><?php echo isset($order['createdate']) ? $order['createdate'] : "Không có ngày"; ?></td>
+                        <td>
+                            <?php
+                            $total = Orders::total_order($order['id']);
+                            echo $total ? number_format($total) . " VNĐ" : "Không có giá trị";
+                            ?>
+                        </td>
+                        <td><?php echo $stt ? $stt['sttName'] : "Không xác định"; ?></td>
+                        <td>
+                            <a href="vieworder_detail.php?id=<?php echo $order['id']; ?>" type="button" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                <?php
+                }
+            } else { ?>
+                <tr>
+                    <td colspan="6">Không có đơn hàng nào.</td>
                 </tr>
             <?php } ?>
+
         </tbody>
     </table>
     <nav aria-label="Page navigation">

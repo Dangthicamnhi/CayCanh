@@ -79,7 +79,7 @@ $user_info = Account_info::getAccountInfoActive($id_user);
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title"><a href="hoadon.php?id=<?php echo $value['id'] ?>">Ngày mua: <?php echo $value['createdate'] ?></a></h4>
-                    <p><span>Tình trạng: </span><?php echo $stt['sttName'] ?></p>
+                    <p><span>Tình trạng: </span><?php echo isset($stt['sttName']) ? $stt['sttName'] : "Chưa xác định"; ?></p>
                     <p class="card-text">Tổng giá: <?php echo number_format($totalOrder) ?> <span>VNĐ</span></p>
                 </div>
             </div>

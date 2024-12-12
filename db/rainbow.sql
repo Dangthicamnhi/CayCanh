@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 20, 2024 at 02:16 PM
+-- Generation Time: Dec 12, 2024 at 05:33 AM
 -- Server version: 8.0.31
 -- PHP Version: 8.0.26
 
@@ -28,10 +28,10 @@ DELIMITER $$
 -- Procedures
 --
 DROP PROCEDURE IF EXISTS `AddToCart`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AddToCart` (`ctID` INT(11), `productID` INT(11), `quantity` INT(11))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddToCart` (IN `ctID` INT(11), IN `productID` INT(11), IN `quantity` INT(11))   BEGIN
 	DECLARE idcart int(11) DEFAULT 0;
     
-	SELECT ID into idcart FROM `order` WHERE sttOrder='1' AND custom_id=ctID;
+	SELECT ID into idcart FROM `order` WHERE sttOrder='2' AND custom_id=ctID;
     
     if idcart=0 THEN
     	INSERT INTO `order`( `createdate`, `custom_id`, `fullname`, `sttOrder`) VALUES (now(),customID,fullname,1);
@@ -490,7 +490,7 @@ CREATE TABLE IF NOT EXISTS `account` (
 --
 
 INSERT INTO `account` (`id`, `role`, `username`, `passwords`, `fullname`, `createdate`, `lastmodified`) VALUES
-(1, 'admin', 'admin@admin.com', '$2y$10$WCZW4BHvRYiCHyfuHmn3F.lxaTLgx9GZkW3vv759JsUHlEa/5jDyC', 'Cẩm Nhi', '2024-12-19 23:23:30', NULL),
+(1, 'admin', 'admin@admin.com', '$2y$10$DHvAyS/AoCVWtf/a3SEmeOU/vTg8qU8pRYUUqaTfm1YlVwH1r9e.q', 'Cẩm Nhi', '2024-12-19 23:23:30', NULL),
 (2, 'client', 'client@gmail.com', '$2y$10$qJBsqhdSv2jpnDnpEzWpyel4K7Xo0IuO6.JyhUMpbQFlxxqCnOS2S', 'Hoài Thương', '2024-12-20 11:18:16', NULL),
 (3, 'client', 'client1@gmail.com', 'client1', 'Lê Thị Thúy', '2024-03-19 00:00:00', '2024-01-09 00:00:00'),
 (4, 'client', 'client2@gmail.com', 'client2', 'Nguyễn Thị Trường', '2024-08-28 00:00:00', '2024-01-13 00:00:00'),
@@ -531,6 +531,31 @@ INSERT INTO `account` (`id`, `role`, `username`, `passwords`, `fullname`, `creat
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `account_info`
+--
+
+DROP TABLE IF EXISTS `account_info`;
+CREATE TABLE IF NOT EXISTS `account_info` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_user` int NOT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `createdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `active` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `account_info`
+--
+
+INSERT INTO `account_info` (`id`, `id_user`, `phone`, `address`, `createdate`, `active`) VALUES
+(1, 1, '0565284762', 'thu duc', '2024-12-12 11:44:56', 1),
+(2, 1, '0987644675', 'q2', '2024-12-12 11:56:48', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `category`
 --
 
@@ -550,6 +575,33 @@ INSERT INTO `category` (`id`, `name`, `image`) VALUES
 (1, 'cây mini', 'img/deban.jpg'),
 (2, 'cây không khí', 'img/khongkhi.jpg'),
 (3, 'cây handmade', 'img/handmade.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE IF NOT EXISTS `comments` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `product_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `createdate` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `product_id`, `user_id`, `user_name`, `comment_content`, `createdate`) VALUES
+(1, 56, 1, 'Cẩm Nhi', 'hhh', NULL),
+(2, 56, 1, 'Cẩm Nhi', 'dfg', '2024-12-12 12:01:46');
 
 -- --------------------------------------------------------
 
@@ -592,51 +644,59 @@ CREATE TABLE IF NOT EXISTS `order` (
   `createdate` datetime DEFAULT NULL,
   `custom_id` int DEFAULT NULL,
   `fullname` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `phone` varchar(20) COLLATE utf8mb3_unicode_ci NOT NULL,
   `sttOrder` int DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `custom_id` (`custom_id`),
   KEY `sttOrder` (`sttOrder`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`id`, `createdate`, `custom_id`, `fullname`, `sttOrder`) VALUES
-(1, '2024-01-16 00:00:00', 33, 'cart_cus_33', 5),
-(2, '2024-09-04 00:00:00', 37, 'cart_cus_37', 5),
-(3, '2024-09-15 00:00:00', 3, 'cart_cus_3', 5),
-(4, '2024-03-04 00:00:00', 24, 'cart_cus_24', 5),
-(5, '2024-08-25 00:00:00', 11, 'cart_cus_11', 5),
-(6, '2024-03-25 00:00:00', 24, 'cart_cus_24', 5),
-(7, '2024-05-28 00:00:00', 23, 'cart_cus_23', 5),
-(8, '2024-03-02 00:00:00', 23, 'cart_cus_23', 5),
-(9, '2024-07-11 00:00:00', 4, 'cart_cus_4', 5),
-(10, '2024-03-04 00:00:00', 23, 'cart_cus_23', NULL),
-(11, '2024-01-31 00:00:00', 5, 'cart_cus_5', NULL),
-(12, '2024-03-03 00:00:00', 10, 'cart_cus_10', NULL),
-(13, '2024-01-09 00:00:00', 21, 'cart_cus_21', NULL),
-(14, '2024-07-29 00:00:00', 9, 'cart_cus_9', NULL),
-(15, '2024-09-16 00:00:00', 8, 'cart_cus_8', NULL),
-(16, '2024-06-24 00:00:00', 26, 'cart_cus_26', NULL),
-(17, '2024-06-18 00:00:00', 32, 'cart_cus_32', NULL),
-(18, '2024-06-13 00:00:00', 19, 'cart_cus_19', 5),
-(19, '2024-07-15 00:00:00', 34, 'cart_cus_34', 5),
-(20, '2024-08-22 00:00:00', 30, 'cart_cus_30', 5),
-(21, '2024-01-22 00:00:00', 16, 'cart_cus_16', 5),
-(22, '2024-05-23 00:00:00', 34, 'cart_cus_34', 5),
-(23, '2024-02-16 00:00:00', 25, 'cart_cus_25', NULL),
-(24, '2024-11-11 00:00:00', 31, 'cart_cus_31', NULL),
-(25, '2024-10-31 00:00:00', 22, 'cart_cus_22', NULL),
-(26, '2024-01-29 00:00:00', 19, 'cart_cus_19', NULL),
-(27, '2024-12-14 00:00:00', 36, 'cart_cus_36', NULL),
-(28, '2024-07-09 00:00:00', 34, 'cart_cus_34', NULL),
-(30, '2024-08-14 00:00:00', 18, 'cart_cus_18', NULL),
-(31, '2024-03-24 00:00:00', 4, 'cart_cus_4', NULL),
-(32, '2024-08-29 00:00:00', 10, 'cart_cus_10', NULL),
-(33, '2024-01-19 00:00:00', 19, 'cart_cus_19', NULL),
-(35, '2024-05-26 17:05:04', 1, NULL, 1),
-(36, '2024-06-02 22:51:20', 1, 'a', 5);
+INSERT INTO `order` (`id`, `createdate`, `custom_id`, `fullname`, `phone`, `sttOrder`, `address`) VALUES
+(1, '2024-01-16 00:00:00', 33, 'cart_cus_33', '', 5, ''),
+(2, '2024-09-04 00:00:00', 37, 'cart_cus_37', '', 5, ''),
+(3, '2024-09-15 00:00:00', 3, 'cart_cus_3', '', 5, ''),
+(4, '2024-03-04 00:00:00', 24, 'cart_cus_24', '', 5, ''),
+(5, '2024-08-25 00:00:00', 11, 'cart_cus_11', '', 5, ''),
+(6, '2024-03-25 00:00:00', 24, 'cart_cus_24', '', 5, ''),
+(7, '2024-05-28 00:00:00', 23, 'cart_cus_23', '', 5, ''),
+(8, '2024-03-02 00:00:00', 23, 'cart_cus_23', '', 5, ''),
+(9, '2024-07-11 00:00:00', 4, 'cart_cus_4', '', 5, ''),
+(10, '2024-03-04 00:00:00', 23, 'cart_cus_23', '', NULL, ''),
+(11, '2024-01-31 00:00:00', 5, 'cart_cus_5', '', NULL, ''),
+(12, '2024-03-03 00:00:00', 10, 'cart_cus_10', '', NULL, ''),
+(13, '2024-01-09 00:00:00', 21, 'cart_cus_21', '', NULL, ''),
+(14, '2024-07-29 00:00:00', 9, 'cart_cus_9', '', NULL, ''),
+(15, '2024-09-16 00:00:00', 8, 'cart_cus_8', '', 1, ''),
+(16, '2024-06-24 00:00:00', 26, 'cart_cus_26', '', NULL, ''),
+(17, '2024-06-18 00:00:00', 32, 'cart_cus_32', '', NULL, ''),
+(18, '2024-06-13 00:00:00', 19, 'cart_cus_19', '', 5, ''),
+(19, '2024-07-15 00:00:00', 34, 'cart_cus_34', '', 5, ''),
+(20, '2024-08-22 00:00:00', 30, 'cart_cus_30', '', 5, ''),
+(21, '2024-01-22 00:00:00', 16, 'cart_cus_16', '', 5, ''),
+(22, '2024-05-23 00:00:00', 34, 'cart_cus_34', '', 5, ''),
+(23, '2024-02-16 00:00:00', 25, 'cart_cus_25', '', NULL, ''),
+(24, '2024-11-11 00:00:00', 31, 'cart_cus_31', '', NULL, ''),
+(25, '2024-10-31 00:00:00', 22, 'cart_cus_22', '', NULL, ''),
+(26, '2024-01-29 00:00:00', 19, 'cart_cus_19', '', NULL, ''),
+(28, '2024-07-09 00:00:00', 34, 'cart_cus_34', '', NULL, ''),
+(30, '2024-08-14 00:00:00', 18, 'cart_cus_18', '', NULL, ''),
+(31, '2024-03-24 00:00:00', 4, 'cart_cus_4', '', NULL, ''),
+(32, '2024-08-29 00:00:00', 10, 'cart_cus_10', '', NULL, ''),
+(33, '2024-01-19 00:00:00', 19, 'cart_cus_19', '', NULL, ''),
+(35, '2024-05-26 17:05:04', 1, NULL, '', 5, ''),
+(36, '2024-06-02 22:51:20', 1, 'a', '', 5, ''),
+(37, '2024-12-12 05:07:46', 1, 'Cẩm Nhi', '0565284762', NULL, 'thu duc'),
+(38, '2024-12-12 05:09:05', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc'),
+(39, '2024-12-12 05:16:28', 1, 'Cẩm Nhi', '0565284762', 5, 'thu duc'),
+(40, '2024-12-12 05:21:18', 1, 'Cẩm Nhi', '0565284762', 1, 'thu duc'),
+(41, '2024-12-12 05:25:38', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc'),
+(42, '2024-12-12 05:28:44', 1, 'Cẩm Nhi', '0565284762', 1, 'thu duc'),
+(43, '2024-12-12 05:31:16', 1, 'Cẩm Nhi', '0565284762', 4, 'thu duc');
 
 --
 -- Triggers `order`
@@ -690,6 +750,7 @@ CREATE TABLE IF NOT EXISTS `order_line` (
   `id_order` int NOT NULL,
   `id_product` int NOT NULL,
   `quantity` int DEFAULT NULL,
+  `price` double NOT NULL,
   PRIMARY KEY (`id_order`,`id_product`),
   KEY `id_order` (`id_order`,`id_product`),
   KEY `id_product` (`id_product`),
@@ -701,39 +762,57 @@ CREATE TABLE IF NOT EXISTS `order_line` (
 -- Dumping data for table `order_line`
 --
 
-INSERT INTO `order_line` (`id_order`, `id_product`, `quantity`) VALUES
-(1, 53, 26),
-(1, 60, 3),
-(2, 58, 12),
-(3, 47, 22),
-(3, 53, 0),
-(3, 55, 4),
-(3, 69, 26),
-(8, 68, 11),
-(9, 57, 11),
-(9, 66, 11),
-(11, 69, 25),
-(12, 50, 29),
-(12, 52, 8),
-(16, 49, 26),
-(16, 51, 11),
-(17, 53, 11),
-(18, 50, 16),
-(19, 49, 16),
-(19, 50, 13),
-(22, 56, 30),
-(24, 67, 22),
-(26, 52, 7),
-(26, 55, 15),
-(28, 54, 21),
-(28, 61, 25),
-(30, 50, 19),
-(31, 48, 1),
-(31, 55, 9),
-(35, 50, 1),
-(36, 50, 3),
-(36, 51, 3),
-(36, 52, 3);
+INSERT INTO `order_line` (`id_order`, `id_product`, `quantity`, `price`) VALUES
+(1, 53, 26, 0),
+(1, 60, 3, 0),
+(2, 58, 12, 0),
+(3, 47, 22, 0),
+(3, 53, 0, 0),
+(3, 55, 4, 0),
+(3, 69, 26, 0),
+(8, 68, 11, 0),
+(9, 57, 11, 0),
+(9, 66, 11, 0),
+(11, 69, 25, 0),
+(12, 50, 29, 0),
+(12, 52, 8, 0),
+(16, 49, 26, 0),
+(16, 51, 11, 0),
+(17, 53, 11, 0),
+(18, 50, 16, 0),
+(19, 49, 16, 0),
+(19, 50, 13, 0),
+(22, 56, 30, 0),
+(24, 67, 22, 0),
+(26, 52, 7, 0),
+(26, 55, 15, 0),
+(28, 54, 21, 0),
+(28, 61, 25, 0),
+(30, 50, 19, 0),
+(31, 48, 1, 0),
+(31, 55, 9, 0),
+(35, 50, 1, 0),
+(36, 50, 3, 0),
+(36, 51, 3, 0),
+(36, 52, 3, 0),
+(37, 62, 2, 239000),
+(37, 63, 1, 1216000),
+(38, 56, 1, 208098),
+(38, 57, 1, 16245700),
+(39, 56, 1, 208098),
+(39, 57, 1, 16245700),
+(39, 58, 1, 6000000),
+(40, 62, 1, 239000),
+(40, 63, 1, 1216000),
+(40, 64, 1, 4678000),
+(41, 62, 1, 239000),
+(42, 50, 1, 50009),
+(43, 47, 3, 100000000),
+(43, 49, 1, 1000000),
+(43, 50, 1, 50009),
+(43, 51, 1, 3816500),
+(43, 62, 1, 239000),
+(43, 63, 1, 1216000);
 
 -- --------------------------------------------------------
 
@@ -880,7 +959,7 @@ INSERT INTO `product` (`id`, `name`, `saleoff`, `category`, `imagiUrl`, `short_d
 DROP TABLE IF EXISTS `sttorder`;
 CREATE TABLE IF NOT EXISTS `sttorder` (
   `sttID` int NOT NULL AUTO_INCREMENT,
-  `sttName` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `sttName` varchar(70) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`sttID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
@@ -889,16 +968,22 @@ CREATE TABLE IF NOT EXISTS `sttorder` (
 --
 
 INSERT INTO `sttorder` (`sttID`, `sttName`) VALUES
-(1, 'onCart'),
-(2, 'onDraft'),
-(3, 'onPrinting'),
-(4, 'onShipping'),
-(5, 'paid'),
-(6, 'canceled');
+(1, 'Chờ xác nhận'),
+(2, 'Đang vận chuyển'),
+(3, 'Đang giao hàng'),
+(4, 'Đã giao hàng'),
+(5, 'Đơn đã hủy');
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `account` (`id`);
 
 --
 -- Constraints for table `order`
